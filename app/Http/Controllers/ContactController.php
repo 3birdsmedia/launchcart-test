@@ -40,12 +40,12 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        \App\Product::create([
+        \App\Contact::create([
             'first_name' => $request->get('first_name'),
             'email' => $request->get('email'),
             'phone' => $request->get('phone'),
           ]);
-          
+
 
         return redirect('/contacts');
     }
