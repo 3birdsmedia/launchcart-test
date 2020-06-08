@@ -11,6 +11,7 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <h1>Here are your contacts!</h1>
+                <a class="btn" href="{{ config('app.url')}}/contacts/create">Add More</a>
                 <table>
                     <thead>
                         <td>First Name</td>
@@ -20,7 +21,7 @@
                     <tbody>
                         @foreach ($allContacts as $contact)
                             <tr>
-                                <td>{{ $contact->name }}</td>
+                                <td>{{ $contact->first_name }}</td>
                                 <td class="inner-table">{{ $contact->email }}</td>
                                 <td class="inner-table">{{ $contact->phone }}</td>
                             </tr>

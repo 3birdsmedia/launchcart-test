@@ -11,12 +11,12 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
             <h2>Register</h2>
-              <form method="POST" action="{{ config('app.url')}}/register">
-                  {{ csrf_field() }}
-                  <div class="form-group">
-                      <label for="name">Name:</label>
-                      <input type="text" class="form-control" id="name" name="name">
-                  </div>
+                <form method="POST" action="{{ config('app.url')}}/register">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
 
                   <div class="form-group">
                       <label for="email">Email:</label>

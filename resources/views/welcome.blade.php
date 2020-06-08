@@ -31,8 +31,8 @@
                             Launchpad Test
                         </div>
                         <div class="links">
-                        <a href="{{ config('app.url')}}/contacts/create">Add Contact</a>
-                        <a href="{{ config('app.url')}}/contacts">View Contacts</a>
+                        <a href="{{ config('app.url')}}/login">Login</a>
+                        <a href="{{ config('app.url')}}/register">Register</a>
                         </div>
                     </div>
                 </div>

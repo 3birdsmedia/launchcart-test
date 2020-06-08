@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -15,9 +16,10 @@ class ContactController extends Controller
     {
         //
 
+        Log::debug("HELLO index");
         $contacts = \App\Contact::all();
 
-        return view('viewcontacts', ['allContacts' => $contacts]);
+        return view('contacts/view', ['allContacts' => $contacts]);
     }
 
     /**
@@ -27,8 +29,10 @@ class ContactController extends Controller
      */
     public function create()
     {
+
+        Log::debug("HELLO");
         // Create a contact
-        return view('createcontact');
+        return view('contacts/create');
 
     }
 
@@ -38,15 +42,20 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
-        \App\Contact::create([
-            'first_name' => $request->get('first_name'),
-            'email' => $request->get('email'),
-            'phone' => $request->get('phone'),
-          ]);
 
+        Log::debug("HELLO request");
+        $this->validate(request(), [
+            'first_name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required'
+        ]);
 
+        Log::debug("HELLO request");
+        \App\Contact::create(request(['first_name','email','phone']));
+
+        Log::debug("HELLO request after");
         return redirect('/contacts');
     }
 
