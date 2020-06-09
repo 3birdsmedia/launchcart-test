@@ -15,20 +15,21 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 
 
 // Need to look into the two different ways of usign these routes (noticed a difference with @ and without @ also :get, :post and :resource)
 
 //Adding Registration/login functionality
-Route::get('/register', 'RegistrationController@create');
+Route::get('/register', 'RegistrationController@create')->name('register');
 Route::post('register', 'RegistrationController@store');
 
-//Route::get('/login', 'SessionsController@create');
-//Route::post('/login', 'SessionsController@store');
-//Route::get('/logout', 'SessionsController@destroy');
+Route::get('/login', 'SessionsController@create')->name('login');
+Route::post('/login', 'SessionsController@store');
+Route::get('/logout', 'SessionsController@destroy');
 
-
-//Adding default CRUD controller
-Route::resource('/contacts', 'ContactController');
+Route::group(['middleware' => 'auth'], function () {
+    //Adding default CRUD controller
+    Route::resource('/contacts', 'ContactController');
+});

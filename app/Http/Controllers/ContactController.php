@@ -14,11 +14,11 @@ class ContactController extends Controller
      */
     public function index()
     {
-        //
+        Log::debug("User ID = ". auth()->user()->id);
+        //Log::debug("Contact Index");
+        $contacts = \App\Contact::where('user_id', auth()->user()->id)->get();
 
-        Log::debug("HELLO index");
-        $contacts = \App\Contact::all();
-
+        Log::debug($contacts);
         return view('contacts/view', ['allContacts' => $contacts]);
     }
 
@@ -30,7 +30,7 @@ class ContactController extends Controller
     public function create()
     {
 
-        Log::debug("HELLO");
+        //Log::debug("Contact Create");
         // Create a contact
         return view('contacts/create');
 
@@ -45,17 +45,22 @@ class ContactController extends Controller
     public function store()
     {
 
-        Log::debug("HELLO request");
+        Log::debug("User ID in store= ". auth()->user()->id);
         $this->validate(request(), [
             'first_name' => 'required',
             'email' => 'required|email',
-            'phone' => 'required'
+            'phone' => 'required',
+            'user_id'=> 'required'
         ]);
 
-        Log::debug("HELLO request");
-        \App\Contact::create(request(['first_name','email','phone']));
+        //Log::debug("Contact Store after validation");
+        \App\Contact::create(request([
+            'first_name',
+            'email',
+            'phone',
+            'user_id'
+        ]));
 
-        Log::debug("HELLO request after");
         return redirect('/contacts');
     }
 

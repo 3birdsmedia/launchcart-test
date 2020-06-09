@@ -10,28 +10,23 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-            <h2>Register</h2>
-                <form method="POST" action="{{ config('app.url')}}/register">
+            <h2>Login</h2>
+                <form method="POST" action="{{ config('app.url')}}/login">
                     {{ csrf_field() }}
                     <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email">
                     </div>
 
-                  <div class="form-group">
-                      <label for="email">Email:</label>
-                      <input type="email" class="form-control" id="email" name="email">
-                  </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
 
-                  <div class="form-group">
-                      <label for="password">Password:</label>
-                      <input type="password" class="form-control" id="password" name="password">
-                  </div>
-
-                  <div class="form-group">
-                      <button style="cursor:pointer" type="submit" class="btn btn-primary">Submit</button>
-                      <a class="btn outline" href="{{ route('login') }}">Login</a>
-                  </div>
+                    <div class="form-group">
+                        <button style="cursor:pointer" type="submit" class="btn">Login</button>
+                        <a class="btn outline" href="{{ route('register') }}">Register</a>
+                    </div>
                     @if(count($errors))
                         <div class="form-group">
                             <div class="alert alert-danger">
@@ -43,7 +38,7 @@
                             </div>
                         </div>
                     @endif
-              </form>
+                </form>
 
             </div>
         </div>

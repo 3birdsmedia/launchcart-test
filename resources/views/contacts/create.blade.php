@@ -23,8 +23,10 @@
                     </div>
 
                     <div class="form-input">
-                        <label>Phone</label> <input type="number" name="phone">
+                        <label>Phone</label> <input type="number" name="phone" maxlength="10">
                     </div>
+
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
 
                     <button type="submit">Submit</button>
                 </form>

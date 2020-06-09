@@ -12,7 +12,8 @@
             <div class="content">
                 <h1>Here are your contacts!</h1>
                 <a class="btn" href="{{ config('app.url')}}/contacts/create">Add More</a>
-                <table>
+                <a class="btn logout" href="{{ config('app.url')}}/logout">Logout</a>
+                <table cellpadding="10">
                     <thead>
                         <td>First Name</td>
                         <td>Email</td>
