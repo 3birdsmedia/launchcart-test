@@ -16,6 +16,7 @@ class ContactController extends Controller
     public function index()
     {
         Log::debug("User ID = ". auth()->user()->id);
+        Log::debug("User List ID = ". auth()->user()->list_id);
         //Log::debug("Contact Index");
         $contacts = \App\Contact::where('user_id', auth()->user()->id)->get();
 
@@ -43,10 +44,14 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
+        $private_key = env('KLAVIYO_PIVRATE_KEY');
+        $list_id = auth()->user()->list_id;
 
         Log::debug("User ID in store= ". auth()->user()->id);
+        Log::debug("User List ID in store = ". auth()->user()->list_id);
+
         $this->validate(request(), [
             'first_name' => 'required',
             'email' => 'required|email',
@@ -54,7 +59,7 @@ class ContactController extends Controller
             'user_id'=> 'required'
         ]);
 
-        //Log::debug("Contact Store after validation");
+        Log::debug("Contact Store after validation");
         \App\Contact::create(request([
             'first_name',
             'email',
@@ -62,19 +67,29 @@ class ContactController extends Controller
             'user_id'
         ]));
 
-        $response = Http::withToken(env('KLAVIYO_PRIVATE_KEY', ''))->post('https://a.klaviyo.com/api/track', [
-                'token' => env('KLAVIYO_PUBLIC_KEY', ''),
-                'event' => 'Elected President',
-                'customer_properties' => [
-                  '$email' => 'thomas.jefferson@example.com'
-                ],
-                'properties' => [
-                  'PreviouslyVicePresident' => true,
-                  'YearElected' => 1801,
-                  'VicePresidents' => ['Aaron Burr', 'George Clinton']
-                ]
-        ]);
 
+        // Log::debug('first_name '.$request->first_name);
+        // Log::debug('EMAIL '.$request->email);
+        // Log::debug('phone '.$request->phone);
+        // Log::debug('user_id '.$request->user_id);
+
+        Log::debug('URL https://a.klaviyo.com/api/v2/list/'.$list_id.'/members');
+
+        $response = Http::post('https://a.klaviyo.com/api/v2/list/'.$list_id.'/members', [
+            'api_key' => env('KLAVIYO_PIVRATE_KEY'),
+            'profiles' => [
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'first_name' => $request->first_name,
+                'user_id' => $request->user_id
+            ]
+            ]);
+        // $responseGET = Http::get('https://a.klaviyo.com/api/v2/group/'.$list_id.'/members/all', [
+        //     'api_key' => env('KLAVIYO_PIVRATE_KEY'),
+        //     ]);
+        //Log::debug($responseGET);
+
+        Log::debug($private_key);
         Log::debug($response);
         return redirect('/contacts');
     }
