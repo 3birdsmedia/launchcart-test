@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class ContactController extends Controller
 {
@@ -18,7 +19,7 @@ class ContactController extends Controller
         //Log::debug("Contact Index");
         $contacts = \App\Contact::where('user_id', auth()->user()->id)->get();
 
-        Log::debug($contacts);
+        //Log::debug($contacts);
         return view('contacts/view', ['allContacts' => $contacts]);
     }
 
@@ -61,6 +62,20 @@ class ContactController extends Controller
             'user_id'
         ]));
 
+        $response = Http::withToken(env('KLAVIYO_PRIVATE_KEY', ''))->post('https://a.klaviyo.com/api/track', [
+                'token' => env('KLAVIYO_PUBLIC_KEY', ''),
+                'event' => 'Elected President',
+                'customer_properties' => [
+                  '$email' => 'thomas.jefferson@example.com'
+                ],
+                'properties' => [
+                  'PreviouslyVicePresident' => true,
+                  'YearElected' => 1801,
+                  'VicePresidents' => ['Aaron Burr', 'George Clinton']
+                ]
+        ]);
+
+        Log::debug($response);
         return redirect('/contacts');
     }
 
