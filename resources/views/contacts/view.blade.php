@@ -18,6 +18,8 @@
                         <td>First Name</td>
                         <td>Email</td>
                         <td>Phone</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
                     </thead>
                     <tbody>
                         @foreach ($allContacts as $contact)
@@ -25,6 +27,14 @@
                                 <td>{{ $contact->first_name }}</td>
                                 <td class="inner-table">{{ $contact->email }}</td>
                                 <td class="inner-table">{{ $contact->phone }}</td>
+                                <td class="inner-table">
+                                    <a class="btn" href="{{ URL::to('contact/' . $contact->id . '/edit') }}">&#9998;</a></td>
+                                <td class="inner-table">
+                                    <form id="delete_entry" name="delete_entry" method="POST" action="{{ URL::route('contacts.destroy', $contact->id) }}" >
+                                        {{ method_field('DELETE') }}
+                                        {{ csrf_field() }}
+                                    <button type="submit" name="delete" class="btn logout">&#10006;</button>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

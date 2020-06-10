@@ -20,6 +20,19 @@ class ContactController extends Controller
         //Log::debug("Contact Index");
         $contacts = \App\Contact::where('user_id', auth()->user()->id)->get();
 
+        //--------------------------------------------------------------------------------------
+        //
+        //This is only to delete/clean up lists, since postman is not working for that purpose
+
+        // $delete_response = Http::delete('https://a.klaviyo.com/api/v2/list/SJgtH5', [
+        //     'api_key' => env('KLAVIYO_PIVRATE_KEY'),
+        // ]);
+        // Log::debug($delete_response);
+        //
+        //--------------------------------------------------------------------------------------
+
+
+
         //Log::debug($contacts);
         return view('contacts/view', ['allContacts' => $contacts]);
     }
@@ -136,6 +149,25 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
+        $private_key = env('KLAVIYO_PIVRATE_KEY');
+        $list_id = auth()->user()->list_id;
+        $contacts = \App\Contact::where('user_id', auth()->user()->id)->get();
         //
+        Log::debug('Trying to destroy');
+        Log::debug($id);
+
+
+        $contact = \App\Contact::find($id);
+        Log::debug($contact->email);
+        $contact->delete();
+
+
+        $response = Http::delete('https://a.klaviyo.com/api/v2/list/'.$list_id.'/members', [
+            'api_key' => env('KLAVIYO_PIVRATE_KEY'),
+            'emails' => $contact->email
+        ]);
+        Log::debug($response);
+
+        return redirect('/contacts');
     }
 }

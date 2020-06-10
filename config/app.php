@@ -228,10 +228,4 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
-
-    'klaviyo_public' => env('KLAVIYO_PUBLIC_KEY', ''),
-
-    'klaviyo_private' => env('KLAVIYO_PRIVATE_KEY', ''),
-
 ];
