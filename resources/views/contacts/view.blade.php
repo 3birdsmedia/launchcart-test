@@ -28,7 +28,7 @@
                                 <td class="inner-table">{{ $contact->email }}</td>
                                 <td class="inner-table">{{ $contact->phone }}</td>
                                 <td class="inner-table">
-                                    <a class="btn" href="{{ URL::to('contact/' . $contact->id . '/edit') }}">&#9998;</a></td>
+                                    <a class="btn" href="{{ URL::to('contacts/' . $contact->id . '/edit') }}">&#9998;</a></td>
                                 <td class="inner-table">
                                     <form id="delete_entry" name="delete_entry" method="POST" action="{{ URL::route('contacts.destroy', $contact->id) }}" >
                                         {{ method_field('DELETE') }}

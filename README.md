@@ -45,3 +45,4 @@ Inspiration, code snippets, etc.
 * [Registration Form](https://vegibit.com/how-to-create-user-registration-in-laravel/)
 * [Implementing MVC in Laravel](https://blog.pusher.com/laravel-mvc-use/)
 * [Laravel Resource CRUD](https://scotch.io/tutorials/simple-laravel-crud-with-resource-controllers)
+* [Easy to implement Laravel 6-7 CRUD] (https://www.techiediaries.com/laravel/php-laravel-7-6-tutorial-crud-example-app-bootstrap-4-mysql-database/)

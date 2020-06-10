@@ -127,6 +127,15 @@ class ContactController extends Controller
     public function edit($id)
     {
         //
+        Log::debug('Trying to edit');
+        Log::debug($id);
+
+
+        $contact = \App\Contact::find($id);
+        Log::debug($contact->email);
+
+        // show the edit form and pass the nerd
+        return view('contacts/edit', ['contact' => $contact]);
     }
 
     /**
@@ -139,6 +148,26 @@ class ContactController extends Controller
     public function update(Request $request, $id)
     {
         //
+        Log::debug('Trying to update');
+        Log::debug($id);
+
+        $request->validate([
+            'first_name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'user_id'=> 'required'
+        ]);
+
+        $contact = \App\Contact::find($id);
+        $contact->first_name =  $request->get('first_name');
+        $contact->email = $request->get('email');
+        $contact->phone = $request->get('phone');
+        //This will to transfer contacts to other users in the future
+        $contact->user_id = $request->get('user_id');
+        $contact->save();
+
+        return redirect('/contacts')->with('success', 'Contact updated!');
+
     }
 
     /**

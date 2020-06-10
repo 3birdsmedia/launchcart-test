@@ -10,10 +10,10 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
-            <h2>Create a new contact</h2>
+            <h1>Create a new contact</h1>
                 <form method="POST" action="{{ config('app.url')}}/contacts">
                     {{ csrf_field() }}
-                    <h1> Enter your contact's details</h1>
+                    <h2> Enter your contact's details</h2>
                     <div class="form-input">
                         <label>Name</label> <input type="text" name="first_name">
                     </div>
