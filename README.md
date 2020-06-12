@@ -1,6 +1,8 @@
 # LaunchCart Test Installation
 
 This file should address all the steps to install and run the LaunchCart Test
+* **To test .csv import you may use the provided `contacts_upload.csv` at the root of the project.**
+
 
 ## Getting Started
 
