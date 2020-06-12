@@ -270,7 +270,7 @@ class ContactController extends Controller
                    $i++;
                 }
                 fclose($file);
-                Log::debug($importData_arr);
+
                 // Insert to MySQL database
                 foreach($importData_arr as $importData){
 
@@ -296,34 +296,18 @@ class ContactController extends Controller
                     ]);
 
                     Log::debug($response);
-
-                  Contact::insertData($insertData);
+                    Contact::insertData($insertData);
                 }
 
                 $request->session()->flash('message','Contacts updloaded!');
               }else{
                 $request->session()->flash('message','File too large. File must be less than 2MB.');
               }
-
             }else{
                $request->session()->flash('message','Invalid File Extension.');
             }
-
           }
-
           // Redirect to index
         return redirect('/contacts')->with('success', 'Contacts updloaded!');
-
-
-
-
-
-
-
-
-
-
     }
-
-
 }
