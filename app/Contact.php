@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
@@ -13,6 +14,15 @@ class Contact extends Model
         'phone',
         'user_id',
      ];
+
+    //CSV Data importer
+     public static function insertData($data){
+
+        $value=DB::table('contacts')->where('email', $data['email'])->get();
+        if($value->count() == 0){
+           DB::table('contacts')->insert($data);
+        }
+     }
 
 
 }

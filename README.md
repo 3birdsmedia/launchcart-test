@@ -27,6 +27,13 @@ php artisan migrate
 php artisan serve
 ```
 
+## @Todo
+
+* Increase error handling
+* Stronger Field validation both for fields and CSV
+* Develop a way to edit Klaviyo contacts (couldn't find a way on their docs, will probably resort to delete and read a contact)
+
+
 ## Authors
 
 Contributors names and contact info
@@ -45,4 +52,5 @@ Inspiration, code snippets, etc.
 * [Registration Form](https://vegibit.com/how-to-create-user-registration-in-laravel/)
 * [Implementing MVC in Laravel](https://blog.pusher.com/laravel-mvc-use/)
 * [Laravel Resource CRUD](https://scotch.io/tutorials/simple-laravel-crud-with-resource-controllers)
-* [Easy to implement Laravel 6-7 CRUD] (https://www.techiediaries.com/laravel/php-laravel-7-6-tutorial-crud-example-app-bootstrap-4-mysql-database/)
+* [Easy to implement Laravel 6-7 CRUD](https://www.techiediaries.com/laravel/php-laravel-7-6-tutorial-crud-example-app-bootstrap-4-mysql-database/)
+* [Article on importing CSV to Database](https://makitweb.com/import-csv-data-to-mysql-database-with-laravel/)

@@ -32,4 +32,7 @@ Route::get('/logout', 'SessionsController@destroy');
 Route::group(['middleware' => 'auth'], function () {
     //Adding default CRUD controller
     Route::resource('/contacts', 'ContactController');
+
+    // //Adding import Functionality
+    Route::post('/upload', 'ContactController@upload');
 });

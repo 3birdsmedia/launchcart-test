@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
@@ -59,6 +60,7 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
+        // Need to abstract these to the construct
         $private_key = env('KLAVIYO_PIVRATE_KEY');
         $list_id = auth()->user()->list_id;
 
@@ -178,6 +180,7 @@ class ContactController extends Controller
      */
     public function destroy($id)
     {
+        // Need to abstract these to the construct
         $private_key = env('KLAVIYO_PIVRATE_KEY');
         $list_id = auth()->user()->list_id;
         $contacts = \App\Contact::where('user_id', auth()->user()->id)->get();
@@ -199,4 +202,128 @@ class ContactController extends Controller
 
         return redirect('/contacts');
     }
+
+    /**
+     * Upload csv files to the database.
+     *
+     * @param  request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function upload(Request $request){
+        Log::debug('--Upload ');
+
+        if ($request->input('submit') != null ){
+
+            $file = $request->file('file');
+
+            // File Details
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $tempPath = $file->getRealPath();
+            $fileSize = $file->getSize();
+            $mimeType = $file->getMimeType();
+
+            // Need to abstract these to the construct
+            $private_key = env('KLAVIYO_PIVRATE_KEY');
+            $list_id = auth()->user()->list_id;
+
+
+
+            // Valid File Extensions
+            $valid_extension = array("csv");
+
+            // 2MB in Bytes
+            $maxFileSize = 2097152;
+
+            // Check file extension
+            if(in_array(strtolower($extension),$valid_extension)){
+
+              // Check file size
+              if($fileSize <= $maxFileSize){
+
+                // File upload location
+                $location = 'uploads/'.auth()->user()->id;
+
+                // Upload file
+                $file->move($location,$filename);
+
+                // Import CSV to Database
+                $filepath = public_path($location."/".$filename);
+
+                // Reading file
+                $file = fopen($filepath,"r");
+
+                $importData_arr = array();
+                $i = 0;
+
+                while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
+                   $num = count($filedata );
+
+                   // Skip first row (Remove below comment if you want to skip the first row)
+                   /*if($i == 0){
+                      $i++;
+                      continue;
+                   }*/
+                   for ($c=0; $c < $num; $c++) {
+                      $importData_arr[$i][] = $filedata [$c];
+                   }
+                   $i++;
+                }
+                fclose($file);
+                Log::debug($importData_arr);
+                // Insert to MySQL database
+                foreach($importData_arr as $importData){
+
+                Log::debug($importData_arr);
+                //clean that phone
+                $phone = preg_replace("/[^0-9]/", "", $importData[2]);
+
+                  $insertData = array(
+                     "first_name"=>$importData[0],
+                     "email"=>$importData[1],
+                     "phone"=>$phone,
+                     "user_id"=>auth()->user()->id
+                    );
+
+                    $response = Http::post('https://a.klaviyo.com/api/v2/list/'.$list_id.'/members', [
+                        'api_key' => env('KLAVIYO_PIVRATE_KEY'),
+                        'profiles' => [
+                            'email' => $importData[1],
+                            'phone' => $phone,
+                            'first_name' => $importData[0],
+                            'user_id' => auth()->user()->id
+                        ]
+                    ]);
+
+                    Log::debug($response);
+
+                  Contact::insertData($insertData);
+                }
+
+                $request->session()->flash('message','Contacts updloaded!');
+              }else{
+                $request->session()->flash('message','File too large. File must be less than 2MB.');
+              }
+
+            }else{
+               $request->session()->flash('message','Invalid File Extension.');
+            }
+
+          }
+
+          // Redirect to index
+        return redirect('/contacts')->with('success', 'Contacts updloaded!');
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 }

@@ -13,7 +13,23 @@
                 <h1>Here are your contacts!</h1>
                 <a class="btn" href="{{ config('app.url')}}/contacts/create">Add More</a>
                 <a class="btn logout" href="{{ config('app.url')}}/logout">Logout</a>
-                <table cellpadding="10">
+                <div class="csv-import">
+                <p>-OR-</p>
+                <!-- Form -->
+                <!-- Message -->
+                @if(session()->has('message'))
+                    <p >{{ session()->get('message') }}</p>
+                @else
+                    <p class="info"> Please be gentle, right now I can only handle <strong>2mb</strong> files, with 3 columns (First Name, Email and Phone) and no headers</p>
+                @endif
+                <form method='post' action='{{ config('app.url')}}/upload' enctype='multipart/form-data' >
+                    {{ csrf_field() }}
+                    {{ method_field('POST') }}
+                    <input type='file' name='file' class="btn outline" >
+                    <input type='submit' name='submit' class="btn import" value='🤯 MASS IMPORT!'>
+                </form>
+                </div>
+                <table cellpadding="10" align="center">
                     <thead>
                         <td>First Name</td>
                         <td>Email</td>
